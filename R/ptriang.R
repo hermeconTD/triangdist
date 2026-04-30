@@ -1,20 +1,32 @@
-# Package triangdist
+#' CDF of the triangular distribution
+#'
+#' Computes the cumulative distribution function of a triangular distribution.
+#'
+#' @param q Numeric vector of values
+#' @param min Lower bound (a)
+#' @param max Upper bound (b)
+#' @param mode Mode (c)
+#'
+#' @return Numeric vector of probabilities
+#' @export
 
-## ptriang
+ptriang <- function(q, min, max, mode) {
 
-ptriang <- function(q, min, max, mode) { #Distribution function.
-  if (q < min) {
-    res <-  0
-  }
-  if (q >= min & q <= mode) {
-    res <- (q - min)^2/((max - min) * (mode - min))
-  }
-  if (q <= max & q > mode) {
-    res <- 1 - (max - q)^2/((max - min) * (max - mode))
-  }
-  if (q > max) {
-    res <- 1
-  }
-  return (res)
+  # Error handling
+  if (any(min >= max)) stop("min must be < max")
+  if (any(mode < min | mode > max)) stop("mode must be in [min, max]")
+
+  res <- numeric(length(q))
+
+  res[q < min] <- 0
+
+  left <- q >= min & q <= mode
+  res[left] <- ((q[left] - min)^2) / ((max - min) * (mode - min))
+
+  right <- q > mode & q <= max
+  res[right] <- 1 - ((max - q[right])^2) / ((max - min) * (max - mode))
+
+  res[q > max] <- 1
+
+  return(res)
 }
-
