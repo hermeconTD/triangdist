@@ -9,7 +9,7 @@
 #'
 #' @return Numeric vector of random values
 #' @export
-
+#' @importFrom stats runif
 rtriang <- function(n, min, max, mode) {
 
   # Error handling
