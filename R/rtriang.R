@@ -15,7 +15,8 @@ rtriang <- function(n, min, max, mode) {
   # Error handling
   if (any(min >= max)) stop("min must be < max")
   if (any(mode < min | mode > max)) stop("mode must be in [min, max]")
-  if (n <= 0) stop("n must be positive")
+  if (!is.numeric(n) || length(n) != 1 || n != floor(n) || n <= 0)
+    stop("n must be a positive integer")
 
   u <- runif(n)
   qtriang(u, min, max, mode)

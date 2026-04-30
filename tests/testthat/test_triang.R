@@ -1,0 +1,51 @@
+test_that("dtriang covers all cases", {
+  x <- c(0, 2, 3, 5, 10)
+  res <- dtriang(x, 1, 6, 3)
+  expect_equal(res[1], 0)
+  expect_equal(res[2], 0.2)
+  expect_equal(res[3], 0.4)
+  expect_equal(res[4], 2/15)
+  expect_equal(res[5], 0)
+})
+
+test_that("ptriang covers all cases", {
+  x <- c(0, 2, 3, 5, 10)
+  res <- ptriang(x, 1, 6, 3)
+  expect_equal(res[1], 0)
+  expect_equal(res[2], 0.1)
+  expect_equal(res[3], 0.4)
+  expect_equal(res[4], 14/15)
+  expect_equal(res[5], 1)
+})
+
+test_that("qtriang covers all cases", {
+  x <- c(0, 0.1, 0.4, 14/15, 1)
+  res <- qtriang(x, 1, 6, 3)
+  expect_equal(res[1], 1)
+  expect_equal(res[2], 2)
+  expect_equal(res[3], 3)
+  expect_equal(res[4], 5)
+  expect_equal(res[5], 6)
+})
+
+test_that("rtriang generates valid values", {
+  set.seed(42)
+  x <- rtriang(1000, 1, 6, 3)
+  expect_true(all(x >= 1 & x <= 6))
+  expect_length(x, 1000)
+})
+
+test_that("error handling works", {
+  expect_error(dtriang(1, 5, 1, 3))
+  expect_error(dtriang(1, 1, 6, 10))
+  expect_error(ptriang(1, 5, 1, 3))
+  expect_error(ptriang(1, 1, 6, 10))
+  expect_error(qtriang(-0.1, 1, 6, 3))
+  expect_error(qtriang(1.1, 1, 6, 3))
+  expect_error(qtriang(0.5, 5, 1, 3))
+  expect_error(qtriang(0.5, 1, 6, 10))
+  expect_error(rtriang(0, 1, 6, 3))
+  expect_error(rtriang(-1, 1, 6, 3))
+  expect_error(rtriang(2.5, 1, 6, 3))
+  expect_error(rtriang(100, 5, 1, 3))
+})
